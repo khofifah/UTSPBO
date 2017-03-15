@@ -64,10 +64,11 @@ public class kasir extends javax.swing.JFrame {
         nama = new javax.swing.JTextField();
         s1 = new javax.swing.JRadioButton();
         s2 = new javax.swing.JRadioButton();
-        tgl = new com.toedter.calendar.JDateChooser();
+        tgl = new javax.swing.JTextField();
         print = new javax.swing.JButton();
         save = new javax.swing.JButton();
         clear = new javax.swing.JButton();
+        show = new javax.swing.JButton();
         del = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -292,6 +293,8 @@ public class kasir extends javax.swing.JFrame {
         s2.setForeground(new java.awt.Color(255, 255, 255));
         s2.setText("Malam");
 
+        tgl.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -299,9 +302,11 @@ public class kasir extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(tgl, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -315,15 +320,16 @@ public class kasir extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tgl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nama)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(s1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(s2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(s1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(s2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tgl)
+                        .addComponent(jLabel5)))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel3);
@@ -332,6 +338,11 @@ public class kasir extends javax.swing.JFrame {
         print.setBackground(new java.awt.Color(153, 0, 0));
         print.setForeground(new java.awt.Color(255, 255, 255));
         print.setText("Print");
+        print.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printActionPerformed(evt);
+            }
+        });
         getContentPane().add(print);
         print.setBounds(30, 390, 830, 30);
 
@@ -344,7 +355,7 @@ public class kasir extends javax.swing.JFrame {
             }
         });
         getContentPane().add(save);
-        save.setBounds(30, 350, 240, 30);
+        save.setBounds(30, 350, 160, 30);
 
         clear.setBackground(new java.awt.Color(153, 0, 0));
         clear.setForeground(new java.awt.Color(255, 255, 255));
@@ -355,13 +366,24 @@ public class kasir extends javax.swing.JFrame {
             }
         });
         getContentPane().add(clear);
-        clear.setBounds(320, 350, 240, 30);
+        clear.setBounds(250, 350, 160, 30);
+
+        show.setBackground(new java.awt.Color(153, 0, 0));
+        show.setForeground(new java.awt.Color(255, 255, 255));
+        show.setText("Show");
+        show.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showActionPerformed(evt);
+            }
+        });
+        getContentPane().add(show);
+        show.setBounds(470, 350, 160, 30);
 
         del.setBackground(new java.awt.Color(153, 0, 0));
         del.setForeground(new java.awt.Color(255, 255, 255));
         del.setText("Delete");
         getContentPane().add(del);
-        del.setBounds(620, 350, 240, 30);
+        del.setBounds(700, 350, 160, 30);
 
         jPanel4.setBackground(new java.awt.Color(102, 102, 102));
         jPanel4.setLayout(null);
@@ -470,13 +492,13 @@ public class kasir extends javax.swing.JFrame {
         }
         
         String MAKAN = "";
-        if ((maem1.isSelected() || maem2.isSelected())|| maem3.isSelected()){
+        if ((maem1.isSelected() && maem2.isSelected()) && maem3.isSelected()){
             MAKAN = "Pizza Today, Cheesy Pizza, and Pizza Deluxe";
-        } else if (maem1.isSelected() || maem2.isSelected()){
+        } else if (maem1.isSelected() && maem2.isSelected()){
             MAKAN = "Pizza Today and Cheesy Pizza";
-        } else if (maem1.isSelected() || maem3.isSelected()){
+        } else if (maem1.isSelected() && maem3.isSelected()){
             MAKAN = "Pizza Today and Pizza Deluxe";
-        } else if (maem2.isSelected()|| maem3.isSelected()){
+        } else if (maem2.isSelected() && maem3.isSelected()){
             MAKAN = "Cheesy Pizza and Pizza Deluxe";
         } else if (maem1.isSelected()){
             MAKAN = "Pizza Today";
@@ -486,62 +508,61 @@ public class kasir extends javax.swing.JFrame {
             MAKAN = "Pizza Deluxe";
         }
         
-        String MINUM = "";
-        if ((mimik1.isSelected() || mimik2.isSelected()) || mimik3.isSelected()){
+         String MINUM = "";
+        if ((mimik1.isSelected() && mimik2.isSelected()) && mimik3.isSelected()){
             MINUM = "Freezy Float, Messy Ice, and Very Black Coffe";
-        } else if (mimik1.isSelected() || mimik2.isSelected()){
+        } else if (mimik1.isSelected() && mimik2.isSelected()){
             MINUM = "Freezy Float and Messy Ice";
-        } else if (mimik1.isSelected() || mimik3.isSelected()){
+        } else if (mimik1.isSelected() && mimik3.isSelected()){
             MINUM = "Freezy Float and Very Black Coffe";
-        } else if (mimik2.isSelected() || mimik3.isSelected()){
+        } else if (mimik2.isSelected() && mimik3.isSelected()){
             MINUM = "Messy Ice and Very Black Coffe";
         } else if (mimik1.isSelected()){
             MINUM = "Freezy Float";
         } else if (mimik2.isSelected()){
             MINUM = "Messy Ice";
-        } else {
+        } else if (mimik3.isSelected()){
             MINUM = "Very Black Coffe";
         }
         
-        
-        int TTL_MAKAN;
-        if(maem1.isSelected() || maem2.isSelected() || maem3.isSelected()){
+        int TTL_MAKAN = 0;
+        if((maem1.isSelected() && maem2.isSelected()) && maem3.isSelected()){
             TTL_MAKAN = (40000+50000+60000)*jml_maem;
-        } else if(maem1.isSelected() || maem2.isSelected()){
+        } else if(maem1.isSelected() && maem2.isSelected()){
             TTL_MAKAN = (40000+50000)*jml_maem;
-        } else if(maem1.isSelected() || maem3.isSelected()){
+        } else if(maem1.isSelected() && maem3.isSelected()){
             TTL_MAKAN = (40000+60000)*jml_maem;
-        } else if(maem2.isSelected() || maem3.isSelected()){
+        } else if(maem2.isSelected() && maem3.isSelected()){
             TTL_MAKAN = (50000+60000)*jml_maem;
         } else if(maem1.isSelected()){
             TTL_MAKAN = 40000*jml_maem;
         } else if(maem2.isSelected()){
             TTL_MAKAN = 50000*jml_maem;
-        } else {
+        } else if(maem3.isSelected()){
             TTL_MAKAN = 60000*jml_maem;
         }
-        
-        int TTL_MINUM;
-        if(mimik1.isSelected() || mimik2.isSelected() || mimik3.isSelected()){
+        int TTL_MINUM = 0;
+        if((mimik1.isSelected() && mimik2.isSelected()) && mimik3.isSelected()){
             TTL_MINUM = (20000+15000+10000)*jml_mimik;
-        } else if(mimik1.isSelected() || mimik2.isSelected()){
+        } else if(mimik1.isSelected() && mimik2.isSelected()){
             TTL_MINUM = (20000+15000)*jml_mimik;
-        } else if(mimik1.isSelected() || mimik3.isSelected()){
+        } else if(mimik1.isSelected() && mimik3.isSelected()){
             TTL_MINUM = (20000+10000)*jml_mimik;
-        } else if(mimik2.isSelected() || mimik3.isSelected()){
+        } else if(mimik2.isSelected() && mimik3.isSelected()){
             TTL_MINUM = (15000+10000)*jml_mimik;
         } else if(mimik1.isSelected()){
             TTL_MINUM = 20000*jml_mimik;
         } else if(mimik2.isSelected()){
             TTL_MINUM = 15000*jml_mimik;
-        } else {
+        } else if(mimik3.isSelected()){
             TTL_MINUM = 10000*jml_mimik;
         }
         
         int TTL_POKOK = TTL_MAKAN + TTL_MINUM;
-        int TOTAL;
-        if (TTL_POKOK <= 200000){
-            TOTAL = (TTL_POKOK/20)*100;
+        int bagi = TTL_POKOK*(2/10);
+        int TOTAL = 0;
+        if (TTL_POKOK > 200000){
+            TOTAL = TTL_POKOK - bagi;
         } else {
             TOTAL = TTL_POKOK;
         }
@@ -549,7 +570,7 @@ public class kasir extends javax.swing.JFrame {
         int KEMBALI = yar - TTL_MAKAN;
         
         String SQL = "INSERT INTO penjualan "
-                    + "VALUES('"+tgl+"','"+nama.getText()+"','"+ES+"','"
+                    + "VALUES('"+tgl.getText()+"','"+nama.getText()+"','"+ES+"','"
                     +MAKAN+"','"+jml_maem+"','"+MINUM+"','"
                     +jml_mimik+"','"+TOTAL+"','"+yar+"','"+KEMBALI+"')";
         int status = KoneksiDB.execute(SQL);
@@ -560,6 +581,7 @@ public class kasir extends javax.swing.JFrame {
                 
             }
         }
+        
     }//GEN-LAST:event_saveActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
@@ -569,12 +591,12 @@ public class kasir extends javax.swing.JFrame {
         mimik.setText("");
         bayar.setText("");
         buttonGroup1.clearSelection();
-        maem1.setText("");
-        maem2.setText("");
-        maem3.setText("");
-        mimik1.setText("");
-        mimik2.setText("");
-        mimik3.setText("");
+        maem1.setSelected(false);
+        maem2.setSelected(false);
+        maem3.setSelected(false);
+        mimik1.setSelected(false);
+        mimik2.setSelected(false);
+        mimik3.setSelected(false);
     }//GEN-LAST:event_clearActionPerformed
 
     private void mimik2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mimik2ActionPerformed
@@ -588,6 +610,118 @@ public class kasir extends javax.swing.JFrame {
     private void maemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_maemActionPerformed
+
+    private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
+        // TODO add your handling code here:
+        int jml_maem;
+        int jml_mimik;
+        int yar;
+        jml_maem = Integer.parseInt(maem.getText());
+        jml_mimik = Integer.parseInt(mimik.getText());
+        yar = Integer.parseInt(bayar.getText());
+        
+        String MAKAN = "";
+        if ((maem1.isSelected() && maem2.isSelected()) && maem3.isSelected()){
+            MAKAN = "Pizza Today, Cheesy Pizza, and Pizza Deluxe";
+        } else if (maem1.isSelected() && maem2.isSelected()){
+            MAKAN = "Pizza Today and Cheesy Pizza";
+        } else if (maem1.isSelected() && maem3.isSelected()){
+            MAKAN = "Pizza Today and Pizza Deluxe";
+        } else if (maem2.isSelected() && maem3.isSelected()){
+            MAKAN = "Cheesy Pizza and Pizza Deluxe";
+        } else if (maem1.isSelected()){
+            MAKAN = "Pizza Today";
+        } else if (maem2.isSelected()){
+            MAKAN = "Cheesy Pizza";
+        } else {
+            MAKAN = "Pizza Deluxe";
+        }
+        
+        String MINUM = "";
+        if ((mimik1.isSelected() && mimik2.isSelected()) && mimik3.isSelected()){
+            MINUM = "Freezy Float, Messy Ice, and Very Black Coffe";
+        } else if (mimik1.isSelected() && mimik2.isSelected()){
+            MINUM = "Freezy Float and Messy Ice";
+        } else if (mimik1.isSelected() && mimik3.isSelected()){
+            MINUM = "Freezy Float and Very Black Coffe";
+        } else if (mimik2.isSelected() && mimik3.isSelected()){
+            MINUM = "Messy Ice and Very Black Coffe";
+        } else if (mimik1.isSelected()){
+            MINUM = "Freezy Float";
+        } else if (mimik2.isSelected()){
+            MINUM = "Messy Ice";
+        } else if (mimik3.isSelected()){
+            MINUM = "Very Black Coffe";
+        }
+        
+        int TTL_MAKAN = 0;
+        if((maem1.isSelected() && maem2.isSelected()) && maem3.isSelected()){
+            TTL_MAKAN = (40000+50000+60000)*jml_maem;
+        } else if(maem1.isSelected() && maem2.isSelected()){
+            TTL_MAKAN = (40000+50000)*jml_maem;
+        } else if(maem1.isSelected() && maem3.isSelected()){
+            TTL_MAKAN = (40000+60000)*jml_maem;
+        } else if(maem2.isSelected() && maem3.isSelected()){
+            TTL_MAKAN = (50000+60000)*jml_maem;
+        } else if(maem1.isSelected()){
+            TTL_MAKAN = 40000*jml_maem;
+        } else if(maem2.isSelected()){
+            TTL_MAKAN = 50000*jml_maem;
+        } else if(maem3.isSelected()){
+            TTL_MAKAN = 60000*jml_maem;
+        }
+        
+        int TTL_MINUM = 0;
+        if((mimik1.isSelected() && mimik2.isSelected()) && mimik3.isSelected()){
+            TTL_MINUM = (20000+15000+10000)*jml_mimik;
+        } else if(mimik1.isSelected() && mimik2.isSelected()){
+            TTL_MINUM = (20000+15000)*jml_mimik;
+        } else if(mimik1.isSelected() && mimik3.isSelected()){
+            TTL_MINUM = (20000+10000)*jml_mimik;
+        } else if(mimik2.isSelected() && mimik3.isSelected()){
+            TTL_MINUM = (15000+10000)*jml_mimik;
+        } else if(mimik1.isSelected()){
+            TTL_MINUM = 20000*jml_mimik;
+        } else if(mimik2.isSelected()){
+            TTL_MINUM = 15000*jml_mimik;
+        } else if(mimik3.isSelected()){
+            TTL_MINUM = 10000*jml_mimik;
+        }
+        
+        int TTL_POKOK = TTL_MAKAN + TTL_MINUM;
+        int bagi = TTL_POKOK*(2/10);
+        int TOTAL = 0;
+        if (TTL_POKOK > 200000){
+            TOTAL = TTL_POKOK - bagi;
+        } else {
+            TOTAL = TTL_POKOK;
+        }
+        
+        int KEMBALI = yar - TOTAL;
+        int KEBALIK = TOTAL - yar;
+        String marah="";
+        if(yar < TOTAL){
+            marah="Anda berhutang "+KEBALIK+" harap lunasi segera";
+        } else if (yar > TOTAL) {
+            marah="Uang anda lebih "+KEMBALI+" semoga anda menggunakan uang anda di resto kami lagi";
+        } else {
+            marah="Uang anda pas jadi anda tidak perlu meminta uang kembalian kepada kami";
+        }
+        
+        JOptionPane.showMessageDialog(null, "------------------- INI STRUK KEKINIAN --------------------\n\n\n"
+                +"Makanan     : "+MAKAN+"\n"
+                +"Minuman     : "+MINUM+"\n"
+                +"Total Bayar : "+TOTAL+"\n"
+                +"Uang Anda   : "+yar+"\n"
+                +"Kembalian   : "+KEMBALI+"\n\n\n"
+                +marah+"\n"
+                +"Terima Kasih telah membeli dari resto kami\n","KHOFI PIZZA",1);
+    }//GEN-LAST:event_printActionPerformed
+
+    private void showActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showActionPerformed
+        // TODO add your handling code here:
+        selectData();
+    }//GEN-LAST:event_showActionPerformed
 
     /**
      * @param args the command line arguments
@@ -665,7 +799,8 @@ public class kasir extends javax.swing.JFrame {
     private javax.swing.JRadioButton s1;
     private javax.swing.JRadioButton s2;
     private javax.swing.JButton save;
-    private com.toedter.calendar.JDateChooser tgl;
+    private javax.swing.JButton show;
+    private javax.swing.JTextField tgl;
     // End of variables declaration//GEN-END:variables
 
     private void selectData() {
@@ -691,7 +826,7 @@ public class kasir extends javax.swing.JFrame {
                 String TotalHarga = rs.getString(7);
                 String UangBayar = rs.getString(8);
                 String UangKembali = rs.getString(9);
-                String data[] = {"Tanggal","NamaKasir","Makanan","JmlMakan","Minuman","JmlMinum","TotalHarga","UangBayar","UangKembali"};
+                String data[] = {"Tanggal","NamaKasir","Shift","Makanan","JmlMakan","Minuman","JmlMinum","TotalHarga","UangBayar","UangKembali"};
                 dtm.addRow(data);
             }
         } catch(SQLException ex){
